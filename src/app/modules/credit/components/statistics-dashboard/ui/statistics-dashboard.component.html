@@ -1,0 +1,97 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="table_container">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Місяць</th>
+                <th>Кількість виданих кредитів</th>
+                <th>Загальна сума</th>
+                <th>Середня сума</th>
+                <th>Сума нарахованих відсотків</th>
+                <th>Кількість повернутих кредитів</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let stats of monthlyStatistics">
+                <td>{{ stats.month }}</td>
+                <td>{{ stats.totalCredits }}</td>
+                <td>{{ stats.totalAmount | currency : "₴" }}</td>
+                <td>{{ stats.averageAmount | currency : "₴" }}</td>
+                <td>{{ stats.totalPercent | currency : "₴" }}</td>
+                <td>{{ stats.totalReturnedCredits }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="table_container">
+    <h3>Топ-10 користувачів за кількістю отриманих кредитів</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Користувач</th>
+            <th>Кількість кредитів</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of statisticsService.topUsersByCredits$ | async">
+            <td>{{ user.user }}</td>
+            <td>{{ user.metricValue }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="table_container">
+    <h3>Топ-10 користувачів за сумою сплачених відсотків</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Користувач</th>
+            <th>Сума відсотків</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let user of statisticsService.topUsersByPercentPaid$ | async
+            "
+          >
+            <td>{{ user.user }}</td>
+            <td>
+              {{ user.metricValue | currency : "₴" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="table_container">
+    <h3>Топ-10 користувачів за співвідношенням відсотків до суми кредитів</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Користувач</th>
+            <th>Співвідношення</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of statisticsService.topUsersByRatio$ | async">
+            <td>{{ user.user }}</td>
+            <td>{{ user.metricValue | percent : "1.2-2" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

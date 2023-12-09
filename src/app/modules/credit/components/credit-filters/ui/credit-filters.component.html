@@ -1,0 +1,27 @@
+<form class="row row-cols-sm-auto mb-3 align-items-end">
+  <div>
+    <label class="mb-2">Фільтр періоду дат видачі кредиту</label>
+    <app-datepicker
+      #issuanceDatepicker
+      (dateChange)="formatByIssuanceDate($event)"
+    ></app-datepicker>
+  </div>
+  <div>
+    <label class="mb-2">Фільтр періоду дат повернення кредиту</label>
+    <app-datepicker
+      #returnDatepicker
+      (dateChange)="formatByReturnDate($event)"
+    ></app-datepicker>
+  </div>
+
+  <div class="col-12">
+    <button class="btn btn-outline-primary" (click)="filterByOverdueCredits()">
+      Показати прострочені кредити
+    </button>
+  </div>
+  <div class="col-12 mt-3">
+    <button class="btn btn-danger" (click)="resetFilters()">
+      Скинути фільтри
+    </button>
+  </div>
+</form>
