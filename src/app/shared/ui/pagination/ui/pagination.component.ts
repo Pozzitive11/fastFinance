@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { CreditFiltersService } from 'src/app/modules/credit/services';
+import { Component } from '@angular/core';
 import { CreditPaginationService } from 'src/app/shared/services';
 
 @Component({
@@ -7,11 +6,6 @@ import { CreditPaginationService } from 'src/app/shared/services';
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss'],
 })
-export class PaginationComponent implements OnInit {
-  constructor(
-    protected creditPaginationService: CreditPaginationService,
-    protected creditFiltersService: CreditFiltersService
-  ) {}
-
-  ngOnInit() {}
+export class PaginationComponent {
+  constructor(protected creditPaginationService: CreditPaginationService) {}
 }

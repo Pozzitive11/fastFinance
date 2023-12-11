@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  CreditInformation,
-  MonthlyCreditStatistics,
-} from '../models/credits.model';
+
 import {
   Observable,
   from,
@@ -14,7 +11,8 @@ import {
   tap,
 } from 'rxjs';
 import { CreditApiService } from './credit-api.service';
-export interface UserCreditMetric {
+import { CreditInformation, MonthlyCreditStatistics } from '../models';
+interface UserCreditMetric {
   user: string;
   metricValue: number;
 }
@@ -124,7 +122,10 @@ export class CreditStatisticsService {
   }
 
   private getTopUsersByRatio(credits: CreditInformation[]): UserCreditMetric[] {
-    const userRatioMap = new Map<string, number>();
+    const userRatioMap = new Map<
+      string,
+      { totalPercent: number; totalBody: number }
+    >();
 
     const paidCredits = credits.filter(
       (credit) => credit.actual_return_date !== null
@@ -132,11 +133,24 @@ export class CreditStatisticsService {
 
     paidCredits.forEach((credit) => {
       const user = credit.user;
-      const ratio = credit.percent !== 0 ? credit.percent / credit.body : 0;
-      userRatioMap.set(user, (userRatioMap.get(user) || 0) + ratio);
+      const existingData = userRatioMap.get(user) || {
+        totalPercent: 0,
+        totalBody: 0,
+      };
+      userRatioMap.set(user, {
+        totalPercent: existingData.totalPercent + credit.percent,
+        totalBody: existingData.totalBody + credit.body,
+      });
     });
 
-    return this.getTopUsers(userRatioMap);
+    const sortedUsers = Array.from(userRatioMap.entries()).sort(
+      (a, b) =>
+        b[1].totalPercent / b[1].totalBody - a[1].totalPercent / a[1].totalBody
+    );
+    return sortedUsers.slice(0, 10).map(([user, metricValue]) => ({
+      user,
+      metricValue: metricValue.totalPercent / metricValue.totalBody,
+    }));
   }
 
   private getTopUsers(userMap: Map<string, number>): UserCreditMetric[] {

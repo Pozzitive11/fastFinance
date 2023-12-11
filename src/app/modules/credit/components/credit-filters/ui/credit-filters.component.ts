@@ -1,9 +1,10 @@
 import { Component, DestroyRef, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FilterName } from '@modules/credit/models';
+import { CreditFiltersService } from '@modules/credit/services';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
-import { DatepickerComponent } from 'src/app/shared/ui/datepicker/ui/datepicker.component';
-import { CreditFiltersService } from '../../../services';
-import { CreditPaginationService } from 'src/app/shared/services';
+import { CreditPaginationService } from '@shared/services';
+import { DatepickerComponent } from '@shared/ui/datepicker';
 
 @Component({
   selector: 'app-credit-filters',
@@ -15,8 +16,8 @@ export class CreditFiltersComponent {
   @ViewChild('returnDatepicker') returnDatepicker: DatepickerComponent;
 
   constructor(
-    public creditPaginationService: CreditPaginationService,
-    public creditFiltersService: CreditFiltersService,
+    private creditPaginationService: CreditPaginationService,
+    private creditFiltersService: CreditFiltersService,
     private destroyRef: DestroyRef
   ) {}
 
@@ -40,26 +41,34 @@ export class CreditFiltersComponent {
   }
 
   formatByIssuanceDate(dates: NgbDate[]) {
-    this.returnDatepicker.fromDate = null;
-    this.returnDatepicker.toDate = null;
+    this.creditFiltersService.addFilter({
+      name: FilterName.DATE,
+      props: { dates: this.formatDate(dates), dateType: 'issuance_date' },
+    });
     this.creditFiltersService
-      .filterByDate(this.formatDate(dates), 'issuance_date')
+      .getFilteredCredits()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }
 
   formatByReturnDate(dates: NgbDate[]) {
-    this.issuanceDatepicker.fromDate = null;
-    this.issuanceDatepicker.toDate = null;
+    this.creditFiltersService.addFilter({
+      name: FilterName.DATE,
+      props: { dates: this.formatDate(dates), dateType: 'return_date' },
+    });
     this.creditFiltersService
-      .filterByDate(this.formatDate(dates), 'return_date')
+      .getFilteredCredits()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }
 
   filterByOverdueCredits() {
+    this.creditFiltersService.addFilter({
+      name: FilterName.OVERDUE_CREDITS,
+    });
+
     this.creditFiltersService
-      .filterByOverdueCredits()
+      .getFilteredCredits()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }

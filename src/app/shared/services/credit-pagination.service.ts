@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CreditInformation } from '../../modules/credit/models/credits.model';
+import { CreditInformation } from '@modules/credit/models';
+import { CreditFiltersService } from '@modules/credit/services';
 import { BehaviorSubject, Observable, from, map, tap } from 'rxjs';
-import { CreditFiltersService } from '../../modules/credit/services/credit-filters.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,6 @@ export class CreditPaginationService {
   readonly FILTER_PAG_REGEX = /[^0-9]/g;
   readonly pageSize = 10;
   private _paginatedCredits$ = new BehaviorSubject<CreditInformation[]>([]);
-
   page = 1;
   paginatedCredits$ = from(this._paginatedCredits$);
 

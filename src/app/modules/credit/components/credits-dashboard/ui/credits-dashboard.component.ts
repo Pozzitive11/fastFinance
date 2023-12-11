@@ -1,18 +1,18 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CreditFiltersService } from '../../../services';
-import { CreditInformation } from '../../../models';
-import { CreditPaginationService } from 'src/app/shared/services';
+import { CreditInformation } from '@modules/credit/models';
+import { CreditFiltersService } from '@modules/credit/services';
+import { CreditPaginationService } from '@shared/services';
 @Component({
   selector: 'app-credits-dashboard',
   templateUrl: './credits-dashboard.component.html',
   styleUrls: ['./credits-dashboard.component.scss'],
 })
-export class CreditsDashboardComponent {
+export class CreditsDashboardComponent implements OnInit {
   credits: CreditInformation[] = [];
   constructor(
-    protected creditPaginationService: CreditPaginationService,
-    public creditFiltersService: CreditFiltersService,
+    private creditPaginationService: CreditPaginationService,
+    private creditFiltersService: CreditFiltersService,
     private destroyRef: DestroyRef
   ) {}
 

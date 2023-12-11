@@ -1,29 +1,34 @@
 <div class="table-container">
-  <ng-container *ngIf="credits.length > 0; else noCredits">
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Користувач</th>
-            <th scope="col">Дата видачі</th>
-            <th scope="col">Дата повернення</th>
-            <th scope="col">Фактична дата повернення</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let credit of credits">
-            <th scope="row">{{ credit.id }}</th>
-            <td>{{ credit.user }}</td>
-            <td>{{ credit.issuance_date }}</td>
-            <td>{{ credit.return_date }}</td>
-            <td>{{ credit.actual_return_date }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <app-pagination></app-pagination>
+  <ng-container *ngIf="credits; else loader">
+    <ng-container *ngIf="credits.length > 0; else noCredits">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Користувач</th>
+              <th scope="col">Дата видачі</th>
+              <th scope="col">Дата повернення</th>
+              <th scope="col">Фактична дата повернення</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let credit of credits">
+              <th scope="row">{{ credit.id }}</th>
+              <td>{{ credit.user }}</td>
+              <td>{{ credit.issuance_date }}</td>
+              <td>{{ credit.return_date }}</td>
+              <td>{{ credit.actual_return_date }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-pagination></app-pagination>
+    </ng-container>
   </ng-container>
+  <ng-template #loader>
+    <p class="text-center text-muted mt-4">Loading...</p>
+  </ng-template>
   <ng-template #noCredits>
     <p class="text-center text-muted mt-4">
       На вказані дати кредитів не знайдено.

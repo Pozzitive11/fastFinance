@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { StatisticsPageComponent } from './statistics-page';
 import { CreditDashboardPage } from './credit-dashboard-page';
+import { StatisticsPageComponent } from './statistics-page';
 
 const routes: Routes = [
   { path: 'generalTable', component: CreditDashboardPage },

@@ -1,14 +1,14 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MonthlyCreditStatistics } from '../../../models';
-import { CreditStatisticsService } from '../../../services';
+import { MonthlyCreditStatistics } from '@modules/credit/models';
+import { CreditStatisticsService } from '@modules/credit/services';
 
 @Component({
   selector: 'app-statistics-dashboard',
   templateUrl: './statistics-dashboard.component.html',
   styleUrls: ['./statistics-dashboard.component.scss'],
 })
-export class StatisticsDashboardComponent {
+export class StatisticsDashboardComponent implements OnInit {
   monthlyStatistics: MonthlyCreditStatistics[] = [];
 
   constructor(
